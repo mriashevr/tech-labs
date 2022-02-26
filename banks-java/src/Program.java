@@ -1,8 +1,8 @@
-import Entities.Bank;
-import Entities.BankAccount;
-import Entities.User;
-import Services.CentralBank;
-import Tools.BanksException;
+import entities.Bank;
+import entities.BankAccount;
+import entities.User;
+import services.CentralBank;
+import tools.BanksException;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -11,11 +11,11 @@ public class Program {
     public static void main(String[] args) throws BanksException {
         Scanner scanner = new Scanner(System.in);
         CentralBank centralBank = new CentralBank();
-        Bank bank = centralBank.CreateBank("DVBank");
+        Bank bank = centralBank.createBank("DVBank");
         bank.addNewOffer(3);
         bank.addNewOffer(7);
-        User transferingUser = centralBank.CreateUser("hope", "itdwork", bank);
-        BankAccount trba = bank.createDebitBankAccount(bank, 1, transferingUser);
+        User transferringUser = centralBank.createUser("hope", "itdwork", bank);
+        BankAccount trba = bank.createDebitBankAccount(bank, 1, transferringUser);
         System.out.println("Would you like to open a bank account in DV Bank?");
         System.out.println("1 - Yes");
         System.out.println("2 - No");
@@ -26,7 +26,7 @@ public class Program {
             System.out.println("Plz, enter your surname");
             String surname = scanner.next();
 
-            User user = centralBank.CreateUser(name, surname, bank);
+            User user = centralBank.createUser(name, surname, bank);
 
             System.out.println("Would you like to enter address data?");
             String a = scanner.next();

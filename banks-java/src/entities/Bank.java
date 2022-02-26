@@ -1,22 +1,23 @@
-package Entities;
+package entities;
 
-import BankAccountTypes.CreditBankAccount;
-import BankAccountTypes.DebitBankAccount;
-import BankAccountTypes.DepositBankAccount;
-import Observers.IObservable;
-import Observers.IObserver;
-import Tools.BanksException;
+import bankAccountTypes.CreditBankAccount;
+import bankAccountTypes.DebitBankAccount;
+import bankAccountTypes.DepositBankAccount;
+import observers.IObservable;
+import observers.IObserver;
+import tools.BanksException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Bank implements IObservable {
-    private ArrayList<Offer> Offers;
+    private List<Offer> Offers;
     private String Name;
-    private ArrayList<User> Users;
-    private ArrayList<BankAccount> BankAccounts;
-    private ArrayList<Transaction> Transactions;
-    private ArrayList<IObserver> ObserverNotifications;
+    private List<User> Users;
+    private List<BankAccount> BankAccounts;
+    private List<Transaction> Transactions;
+    private List<IObserver> ObserverNotifications;
 
     public Bank(String name) {
         Name = name;
@@ -27,7 +28,7 @@ public class Bank implements IObservable {
         ObserverNotifications = new ArrayList<IObserver>();
     }
 
-    public ArrayList<Offer> getOffers() {
+    public List<Offer> getOffers() {
         return Offers;
     }
 
@@ -43,7 +44,7 @@ public class Bank implements IObservable {
         Name = name;
     }
 
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         return Users;
     }
 
@@ -51,7 +52,7 @@ public class Bank implements IObservable {
         Users = users;
     }
 
-    public ArrayList<BankAccount> getBankAccounts() {
+    public List<BankAccount> getBankAccounts() {
         return BankAccounts;
     }
 
@@ -59,7 +60,7 @@ public class Bank implements IObservable {
         BankAccounts = bankAccounts;
     }
 
-    public ArrayList<Transaction> getTransactions() {
+    public List<Transaction> getTransactions() {
         return Transactions;
     }
 
@@ -67,7 +68,7 @@ public class Bank implements IObservable {
         Transactions = transactions;
     }
 
-    public ArrayList<IObserver> getObserverNotifications() {
+    public List<IObserver> getObserverNotifications() {
         return ObserverNotifications;
     }
 
@@ -131,17 +132,17 @@ public class Bank implements IObservable {
         return transaction;
     }
 
-    public void AddObserver(IObserver observer) {
+    public void addObserver(IObserver observer) {
         ObserverNotifications.add(observer);
     }
 
-    public void RemoveObserver(IObserver observer) {
+    public void removeObserver(IObserver observer) {
         ObserverNotifications.remove(observer);
     }
 
-    public void Notification(BankAccount bankAccount, Transaction transaction) {
+    public void notification(BankAccount bankAccount, Transaction transaction) {
         for (IObserver observer : ObserverNotifications) {
-            observer.Notify(bankAccount, transaction);
+            observer.notify(bankAccount, transaction);
         }
     }
 }

@@ -1,34 +1,34 @@
-package Tools;
+package tools;
 
-import Entities.BankAccount;
-import Entities.User;
+import entities.BankAccount;
+import entities.User;
 
 import java.util.ArrayList;
 
 public class UserBuilder {
-    private String _name;
-    private String _surname;
-    private String _address;
-    private Integer _passport;
+    private String name;
+    private String surname;
+    private String address;
+    private Integer passport;
     private ArrayList<BankAccount> _listAccounts;
 
     public UserBuilder addName(String name) {
-        _name = name;
+        this.name = name;
         return this;
     }
 
     public UserBuilder addSurname(String surname) {
-        _surname = surname;
+        this.surname = surname;
         return this;
     }
 
     public UserBuilder addAddress(String address) {
-        _address = address;
+        this.address = address;
         return this;
     }
 
     public UserBuilder addPassport(int passport) {
-        _passport = passport;
+        this.passport = passport;
         return this;
     }
 
@@ -38,7 +38,7 @@ public class UserBuilder {
     }
 
     public User Build() {
-        User finalUser = new User(_name, _surname, _address, _passport);
+        User finalUser = new User(name, surname, address, passport);
         return finalUser;
     }
 }

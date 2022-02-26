@@ -1,6 +1,6 @@
-package BankAccountTypes;
+package bankAccountTypes;
 
-import Entities.*;
+import entities.*;
 
 public class DebitBankAccount extends BankAccount {
     public DebitBankAccount(Bank bank, User user) {

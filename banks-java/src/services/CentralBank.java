@@ -1,9 +1,9 @@
-package Services;
+package services;
 
-import Entities.Bank;
-import Entities.BankAccount;
-import Entities.User;
-import Tools.UserBuilder;
+import entities.Bank;
+import entities.BankAccount;
+import entities.User;
+import tools.UserBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,14 +11,14 @@ import java.util.ArrayList;
 public class CentralBank {
     private ArrayList<Bank> _banks = new ArrayList<Bank>();
 
-    public User CreateUser(String name, String surname, Bank bank) {
+    public User createUser(String name, String surname, Bank bank) {
         var user = new User(name, surname, null, null);
-        user.AddListBank(bank);
+        user.addListBank(bank);
         bank.getUsers().add(user);
         return user;
     }
 
-    public Bank CreateBank(String name) {
+    public Bank createBank(String name) {
         var bank = new Bank(name);
         _banks.add(bank);
         return bank;

@@ -1,7 +1,7 @@
-package Entities;
+package entities;
 
-import Observers.IObserver;
-import Tools.BanksException;
+import observers.IObserver;
+import tools.BanksException;
 
 import java.util.UUID;
 
@@ -113,7 +113,7 @@ public abstract class BankAccount implements IObserver {
     }
 
     public BankAccount transferMoney(BankAccount bankAccountEnd, int money) throws BanksException {
-        if (!user.Validation() && money > maxTransferingForSuspiciousUsers) {
+        if (!user.validation() && money > maxTransferingForSuspiciousUsers) {
             throw new BanksException("sus, passport required");
         }
 
@@ -134,7 +134,7 @@ public abstract class BankAccount implements IObserver {
         return this;
     }
 
-    public void Notify(BankAccount bankAccount, Transaction transaction) {
+    public void notify(BankAccount bankAccount, Transaction transaction) {
         System.out.println("The transaction completed:" + transaction);
     }
 }

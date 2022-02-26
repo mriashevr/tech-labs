@@ -1,29 +1,29 @@
 package banksTests;
 
-import Entities.Bank;
-import Entities.BankAccount;
-import Entities.User;
-import Services.CentralBank;
-import Tools.BanksException;
+import entities.Bank;
+import entities.BankAccount;
+import entities.User;
+import services.CentralBank;
+import tools.BanksException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class banksTests {
-    private CentralBank _centralBank;
+    private CentralBank centralBank;
 
     @Before
     public void Setup()
     {
-        _centralBank = new CentralBank();
+        centralBank = new CentralBank();
     }
 
     @Test(expected = BanksException.class)
     public void TransferMoneyFromSuspiciousAccount_CatchError() throws BanksException {
-        Bank _bank = _centralBank.CreateBank("tink");
+        Bank _bank = centralBank.CreateBank("tink");
         _bank.addNewOffer(3);
-        User user1 = _centralBank.CreateUser("maks", "maks", _bank);
-        User user2 = _centralBank.CreateUser("den", "maks", _bank);
+        User user1 = centralBank.CreateUser("maks", "maks", _bank);
+        User user2 = centralBank.CreateUser("den", "maks", _bank);
         BankAccount ba1 = _bank.createDebitBankAccount(_bank, 1, user1);
         BankAccount ba2 = _bank.createDebitBankAccount(_bank, 1, user2);
         ba1.topUpMoney(50000);
@@ -35,9 +35,9 @@ public class banksTests {
     @Test
     public void TopUpMoney_CheckBalance()
     {
-        Bank _bank = _centralBank.CreateBank("tink");
+        Bank _bank = centralBank.CreateBank("tink");
         _bank.addNewOffer(3);
-        User user1 = _centralBank.CreateUser("maks", "maks", _bank);
+        User user1 = centralBank.CreateUser("maks", "maks", _bank);
         BankAccount account = _bank.createDebitBankAccount(_bank, 1, user1);
         Integer amount = 1000;
         account.topUpMoney(amount);
@@ -48,9 +48,9 @@ public class banksTests {
 
     @Test
     public void WithdrawMoney_CheckBalance() throws BanksException {
-        Bank _bank = _centralBank.CreateBank("tink");
+        Bank _bank = centralBank.CreateBank("tink");
         _bank.addNewOffer(3);
-        User user1 = _centralBank.CreateUser("maks", "maks", _bank);
+        User user1 = centralBank.CreateUser("maks", "maks", _bank);
         BankAccount account = _bank.createDebitBankAccount(_bank, 1, user1);
         Integer amount = 1000;
         account.topUpMoney(amount);
@@ -61,11 +61,11 @@ public class banksTests {
 
     @Test
     public void TransferMoney_CheckBalances() throws BanksException {
-        Bank _bank = _centralBank.CreateBank("tink");
+        Bank _bank = centralBank.CreateBank("tink");
         _bank.addNewOffer(3);
-        User user1 = _centralBank.CreateUser("maks", "maks", _bank);
+        User user1 = centralBank.CreateUser("maks", "maks", _bank);
         BankAccount account = _bank.createDebitBankAccount(_bank, 1, user1);
-        User user2 = _centralBank.CreateUser("den", "maks", _bank);
+        User user2 = centralBank.CreateUser("den", "maks", _bank);
         BankAccount account2 = _bank.createDebitBankAccount(_bank, 1, user2);
         account.topUpMoney(5000);
         account.transferMoney(account2, 1000);

@@ -1,6 +1,6 @@
-package Entities;
+package entities;
 
-import Tools.UserBuilder;
+import tools.UserBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,12 +58,12 @@ public class User {
         return banks;
     }
 
-    public List<Bank> AddListBank(Bank bank) {
+    public List<Bank> addListBank(Bank bank) {
         banks.add(bank);
         return banks;
     }
 
-    public Boolean Validation() {
+    public Boolean validation() {
         if (passport == null || address == null) {
             return false;
         }
