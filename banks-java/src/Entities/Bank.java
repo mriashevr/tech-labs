@@ -1,0 +1,147 @@
+package Entities;
+
+import BankAccountTypes.CreditBankAccount;
+import BankAccountTypes.DebitBankAccount;
+import BankAccountTypes.DepositBankAccount;
+import Observers.IObservable;
+import Observers.IObserver;
+import Tools.BanksException;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.UUID;
+
+public class Bank implements IObservable {
+    private ArrayList<Offer> Offers;
+    private String Name;
+    private ArrayList<User> Users;
+    private ArrayList<BankAccount> BankAccounts;
+    private ArrayList<Transaction> Transactions;
+    private ArrayList<IObserver> ObserverNotifications;
+
+    public Bank(String name) {
+        Name = name;
+        Users = new ArrayList<User>();
+        BankAccounts = new ArrayList<BankAccount>();
+        Offers = new ArrayList<Offer>();
+        Transactions = new ArrayList<Transaction>();
+        ObserverNotifications = new ArrayList<IObserver>();
+    }
+
+    public ArrayList<Offer> getOffers() {
+        return Offers;
+    }
+
+    public void setOffers(ArrayList<Offer> offers) {
+        Offers = offers;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public ArrayList<User> getUsers() {
+        return Users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        Users = users;
+    }
+
+    public ArrayList<BankAccount> getBankAccounts() {
+        return BankAccounts;
+    }
+
+    public void setBankAccounts(ArrayList<BankAccount> bankAccounts) {
+        BankAccounts = bankAccounts;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return Transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        Transactions = transactions;
+    }
+
+    public ArrayList<IObserver> getObserverNotifications() {
+        return ObserverNotifications;
+    }
+
+    public void setObserverNotifications(ArrayList<IObserver> observerNotifications) {
+        ObserverNotifications = observerNotifications;
+    }
+
+    public void addNewOffer(int percentage) {
+        Offers.add(new Offer(percentage));
+    }
+
+    public BankAccount createDepositBankAccount(Bank bank, int offerNumber, User user) {
+        var deposit = new DepositBankAccount(bank, user);
+        deposit.changePlusPercents(deposit, Objects.requireNonNull(bank.Offers.stream().filter((offer) ->
+                        offer.getOfferNumber() == offerNumber)
+                .findFirst().orElse(null)));
+        return deposit;
+    }
+
+    public BankAccount createDebitBankAccount(Bank bank, int offerNumber, User user) {
+        var debit = new DebitBankAccount(bank, user);
+        debit.changePlusPercents(debit, Objects.requireNonNull(bank.Offers.stream().filter((offer) ->
+                        offer.getOfferNumber() == offerNumber)
+                .findFirst().orElse(null)));
+        return debit;
+    }
+
+    public BankAccount createCreditBankAccount(Bank bank, int offerNumber, User user) {
+        var credit = new CreditBankAccount(bank, user);
+        credit.changeMinusPercents(credit, Objects.requireNonNull(bank.Offers.stream().filter((offer) ->
+                        offer.getOfferNumber() == offerNumber)
+                .findFirst().orElse(null)));
+        return credit;
+    }
+
+    public Transaction cancelTransaction(UUID transactionId) throws BanksException {
+        Transaction transaction = Transactions.stream().filter((trans) -> trans.getId() == transactionId)
+                .findFirst().orElse(null);
+
+        if (transaction == null) {
+            throw new BanksException("transaction not found");
+        }
+
+        if (transaction.getMayBeCanceled()) {
+            if (transaction.getAccountTo() == null) {
+                transaction.getAccountFrom().topUpMoney(transaction.getSum());
+                transaction.DeclineTransaction();
+                return transaction;
+            }
+
+            if (transaction.getAccountFrom() == null) {
+                transaction.getAccountTo().withdrawMoney(transaction.getSum());
+                transaction.DeclineTransaction();
+                return transaction;
+            }
+
+            transaction.getAccountFrom().transferMoney(transaction.getAccountFrom(), transaction.getSum());
+            transaction.DeclineTransaction();
+        }
+
+        return transaction;
+    }
+
+    public void AddObserver(IObserver observer) {
+        ObserverNotifications.add(observer);
+    }
+
+    public void RemoveObserver(IObserver observer) {
+        ObserverNotifications.remove(observer);
+    }
+
+    public void Notification(BankAccount bankAccount, Transaction transaction) {
+        for (IObserver observer : ObserverNotifications) {
+            observer.Notify(bankAccount, transaction);
+        }
+    }
+}
