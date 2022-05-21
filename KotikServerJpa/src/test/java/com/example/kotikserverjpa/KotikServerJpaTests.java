@@ -40,10 +40,5 @@ public class KotikServerJpaTests {
 
     @Test
     public void checkKotikPresence() {
-        Kotik cat = new Kotik("saske", LocalDate.of(2012, 12, 12), Breed.British, Color.Black);
-//        doReturn(Optional.of(cat)).when(kotikRepository.findById(any()));
-        when(kotikRepository.findById(any())).thenReturn(Optional.of(new Kotik("saske", LocalDate.of(2012, 12, 12), Breed.British, Color.Black)));
-        Kotik savedKotik = service.findById(1);
-        Assertions.assertEquals(cat.getId(), savedKotik.getId());
     }
 }
